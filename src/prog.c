@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//text manipulation
+#include <string.h>
+
 //utf-8 utility
 #include "../lib/utf-8.h"
 
@@ -52,14 +55,32 @@ int main(){
 
 
 	//read a UTF-8 text
-	char         my_utf8_text[] = { 0x24, 0xc2, 0xa3, 0xd0, 0x98, 0xe0, 0xa4, 0xb9, 0xe2, 0x82, 0xac, 0xed, 0x95, 0x9c, 0xf0, 0x90, 0x8d, 0x88 };
-	unsigned int res_len        = 0;
-	int*         res            = utf8_read(my_utf8_text, &res_len);
+	char   my_utf8_text[] = {
+		0x24,                  // U+00024 (dollar)
+		0xc2, 0xa3,            // U+000A3 (pound)
+		0xd0, 0x98,            // U+00418 (cyrilic ize)
+		0xe0, 0xa4, 0xb9,      // U+00939 (a devanagari symbol)
+		0xe2, 0x82, 0xac,      // U+020AC (euro)
+		0xed, 0x95, 0x9c,      // U+0D55C (hangul syllable : modern Korean)
+		0xf0, 0x90, 0x8d, 0x88 // U+10348 (hwair)
+	};
+	size_t read_result_len = 0;
+	int*   read_result     = utf8_read(my_utf8_text, &read_result_len);
 
 	//print result
-	printf("res [");
-	for(size_t r=0; r < res_len; r++){
-		printf("%02x,", res[r]);
+	printf("read result: [");
+	for(size_t r=0; r < read_result_len; r++){
+		printf("%02x, ", read_result[r]);
+	}
+	printf("]\n");
+
+	//write back UTF-8 text
+	char* write_result = utf8_write(read_result, read_result_len);
+
+	//print result
+	printf("write result: [");
+	for(size_t r=0; r < strlen(write_result); r++){
+		printf("0x%02x, ", write_result[r] & 0xff);
 	}
 	printf("]\n");
 

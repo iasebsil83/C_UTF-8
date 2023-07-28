@@ -68,7 +68,7 @@
 // ---------------- BASICS ----------------
 
 //read unicode array from utf-8 text (returns an array of unicode sets (int) + its length)
-int* utf8_read(char* text, unsigned int* result_length){
+int* utf8_read(char* text, size_t* result_length){
 
 	//error cases
 	if(text == NULL || result_length == NULL){
@@ -189,5 +189,75 @@ int* utf8_read(char* text, unsigned int* result_length){
 
 //write utf-8 text from unicode array
 char* utf8_write(int* unicode_arr, unsigned int length){
-	return NULL;
+
+	//error cases
+	if(unicode_arr == NULL || length == 0){
+		printf("RUNTIME ERROR > utf-8.c : utf8_write() : Unicode array is NULL or empty.\n");
+		return NULL;
+	}
+
+	//prepare result (maximum amount allocated, will shrink at the end)
+	char* result = malloc(4*length+1);
+	if(result == NULL){
+		printf("FATAL ERROR > utf-8.c : utf8_write() : Computer refuses to give more memory.\n");
+		exit(EXIT_FAILURE);
+	}
+	size_t result_length = 0;
+
+	//for each character in unicode array
+	for(unsigned int ua=0; ua < length; ua++){
+
+		//case 1 : 4-bytes grapheme
+		if(unicode_arr[ua] > UTF8__MAX_3BYTES){
+			//                          HHHHH--- +                       ---------aaa------------------ => HHHHHaaa (header + 3 data)
+			result[result_length++] = 0b11110000 | ((unicode_arr[ua] & 0b000000000111000000000000000000) >> 18);
+			result[result_length++] = 0b10000000 | ((unicode_arr[ua] & 0b000000000000111111000000000000) >> 12);
+			result[result_length++] = 0b10000000 | ((unicode_arr[ua] & 0b000000000000000000111111000000) >>  6);
+			result[result_length++] = 0b10000000 |  (unicode_arr[ua] & 0b000000000000000000000000111111);
+			//                          TT------ +                       ------------bbbbbb------------ => TTbbbbbb (trailing + 6 data)
+			//                          TT------ +                       ------------------cccccc------ => TTcccccc (trailing + 6 data)
+		}	//                          TT------ +                       ------------------------dddddd => TTdddddd (trailing + 6 data)
+
+		//case 2 : 3-bytes grapheme
+		else if(unicode_arr[ua] > UTF8__MAX_2BYTES){
+			//                          HHHH---- +                       --------aaaa------------ => HHHHaaaa (header + 4 data)
+			result[result_length++] = 0b11100000 | ((unicode_arr[ua] & 0b000000001111000000000000) >> 12);
+			result[result_length++] = 0b10000000 | ((unicode_arr[ua] & 0b000000000000111111000000) >>  6);
+			result[result_length++] = 0b10000000 |  (unicode_arr[ua] & 0b000000000000000000111111);
+			//                          TT------ +                       ------------bbbbbb------ => TTbbbbbb (trailing + 6 data)
+		}	//                          TT------ +                       ------------------cccccc => TTcccccc (trailing + 6 data)
+
+		//case 3 : 2-bytes grapheme
+		else if(unicode_arr[ua] > UTF8__MAX_1BYTE){
+			//                          HHH----- +                       -----aaaaa------ => HHHaaaaa (header + 5 data)
+			result[result_length++] = 0b11000000 | ((unicode_arr[ua] & 0b0000011111000000) >> 6);
+			result[result_length++] = 0b10000000 |  (unicode_arr[ua] & 0b0000000000111111);
+		}	//                          TT------ +                       ----------bbbbbb => TTbbbbbb (trailing + 6 data)
+
+		//case 4 : ASCII grapheme
+		else{
+			result[result_length++] = unicode_arr[ua]; //keep raw byte
+		}
+	}
+
+	//set end character
+	result[result_length] = '\0';
+
+	//shrink result if needed
+	if(result_length != length){
+		size_t new_size   = result_length+1;
+		char*  new_result = malloc(new_size);
+		if(new_result == NULL){
+			printf("FATAL ERROR > utf-8.c : utf8_write() : Computer refuses to give more memory.\n");
+			exit(EXIT_FAILURE);
+		}
+
+		//copy content into new buffer
+		memcpy(new_result, result, new_size);
+		free(result);
+
+		return new_result;
+	}
+
+	return result;
 }
