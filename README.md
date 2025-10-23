@@ -39,9 +39,7 @@ Finally :
 &nbsp;
 
 
-*Contact     : i.a.sebsil83@gmail.com*<br>
-*Youtube     : https://www.youtube.com/user/IAsebsil83*<br>
-*GitHub repo : https://github.com/iasebsil83*<br>
+*Contact: https://github.com/iasebsil83*<br>
 
 Let's Code ! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
