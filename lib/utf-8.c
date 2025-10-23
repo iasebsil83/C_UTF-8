@@ -15,8 +15,6 @@
 
 
 
-
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ UTF-8 [0.1.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                                  UTF-8 by I.A.
 
@@ -24,15 +22,7 @@
     both ways : encoding & decoding. Decoded format is presented under
     unicode arrays (which are basically int arrays).
 
-    27/07/2023 > [0.1.0] :
-    - Created utf-8.c/.h.
-
-    BUGS : .
-    NOTES : .
-
-    Contact     : i.a.sebsil83@gmail.com
-    Youtube     : https://www.youtube.com/user/IAsebsil83
-    GitHub repo : https://github.com/iasebsil83
+    Contact: https://github.com/iasebsil83
 
     Let's Code !                                  By I.A.
 ******************************************************************************************
@@ -57,8 +47,6 @@
 
     If not, see <https://www.gnu.org/licenses/>.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 
 
 
@@ -186,6 +174,8 @@ int* utf8_read(char* text, size_t* result_length){
 
 	return result;
 }
+
+
 
 //write utf-8 text from unicode array
 char* utf8_write(int* unicode_arr, unsigned int length){

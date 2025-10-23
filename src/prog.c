@@ -15,30 +15,13 @@
 
 
 
-
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prog [V.V.V] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                         utf-8.c/.h demonstration program
 
         Blablabla about the subject.
 
-    DD/MM/YYYY > [V.V.V] :
-    - Added something.
-    - Added something else.
-
-    DD/MM/YYYY > [V.V.V] :
-    - Added something that wasn't before.
-    - Fixed a bug.
-    - Added something else.
-    - Added something else again.
-
-    BUGS : Active bugs in last version.
-    NOTES : Notes.
-
-    Contact     :
+    Contact: .
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 
 
 
@@ -49,6 +32,7 @@
 
 //main
 int main(){
+
 	//presentation
 	printf("This is a basic example of \"utf-8.c/.h\" use.\n\n");
 
@@ -83,8 +67,6 @@ int main(){
 		printf("0x%02x, ", write_result[r] & 0xff);
 	}
 	printf("]\n");
-
-
 
 	return EXIT_SUCCESS;
 }

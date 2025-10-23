@@ -23,6 +23,8 @@
 
 
 
+
+
 // ---------------- BASICS ----------------
 
 //read unicode array from utf-8 text (returns an array of unicode sets (int) + its length)
@@ -30,10 +32,5 @@ int* utf8_read(char* text, size_t* result_length);
 
 //write utf-8 text from unicode array
 char* utf8_write(int* unicode_arr, unsigned int length);
-
-
-
-
-
 
 #endif
